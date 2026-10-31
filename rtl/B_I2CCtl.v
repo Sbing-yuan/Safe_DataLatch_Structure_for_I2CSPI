@@ -1,16 +1,16 @@
 module  RTC_I2CIF(
-/*AUTOARG*/
-   // Outputs
-   SDAO, RtcAddr, RtcDataI, RtcWr_b, Write10_set, ReadPxo_Event_done,
-   WritePxo_Event_set, Write3_Motion_Event_set, cpd_raddr_upd_i2c,
-   cpd_r_i2c, reset_xybuf, latdxy_xybuf, prelat_xybuf, DirSum_reset,
-   busy_protect,
-   // Inputs
-   rst, lpoclk, C_purstb_lpo, SCL, SCL_inv, SDAI, SDAI_inv, SCL_data,
-   SDAI_data, RtcDataO, B_slaveID_state, ATPG_TM, ATPG_CLK, B_banksel,
-   B_i2c_timeout_enh, B_i2c_timeout, B_w3clr_enh, B_i2c_rd1_latdxy,
-   D_direction, B_ppg_enh, B_spo2_enh
-   );
+    /*AUTOARG*/
+    // Outputs
+    SDAO, RtcAddr, RtcDataI, RtcWr_b, Write10_set, ReadPxo_Event_done,
+    WritePxo_Event_set, Write3_Motion_Event_set, cpd_raddr_upd_i2c,
+    cpd_r_i2c, reset_xybuf, latdxy_xybuf, prelat_xybuf, DirSum_reset,
+    busy_protect,
+    // Inputs
+    rst, lpoclk, C_purstb_lpo, SCL, SCL_inv, SDAI, SDAI_inv, SCL_data,
+    SDAI_data, RtcDataO, B_slaveID_state, ATPG_TM, ATPG_CLK, B_banksel,
+    B_i2c_timeout_enh, B_i2c_timeout, B_w3clr_enh, B_i2c_rd1_latdxy,
+    D_direction, B_ppg_enh, B_spo2_enh
+);
 
 `include "./def_para.v"
 
@@ -19,7 +19,7 @@ module  RTC_I2CIF(
 //----------------------------------------------------------------------
 input           rst;            //internal reset
 input           lpoclk;          //timeout clock
-input		C_purstb_lpo;
+input           C_purstb_lpo;
 
 // I2C I/F
 input           SCL;               //serial clock
@@ -27,8 +27,8 @@ input           SCL_inv;           //inverse serial clock
 input           SDAI;              //serial data input
 input           SDAI_inv;          //inverse serial data input
 output          SDAO;              //serial data output
-input		SCL_data;          //SCL data in
-input		SDAI_data;	   //SDAI data in
+input           SCL_data;          //SCL data in
+input           SDAI_data;         //SDAI data in
 
 // RTC MCU I/F
 output  [7:0]   RtcAddr;           //address bus, only 16 address for registers
@@ -37,40 +37,40 @@ input   [7:0]   RtcDataO;          //data bus output
 //output                RtcRd_b_rbank;     //read pulse
 output          RtcWr_b;           //write pulse
 
-output		Write10_set;
+output          Write10_set;
 
 // Mouse application
-input		B_slaveID_state;
+input           B_slaveID_state;
 input           ATPG_TM;
 input           ATPG_CLK;
 input   [2:0]   B_banksel;
 input           B_i2c_timeout_enh;
 input   [1:0]   B_i2c_timeout;
-input		B_w3clr_enh;
-input		B_i2c_rd1_latdxy;
+input           B_w3clr_enh;
+input           B_i2c_rd1_latdxy;
 
-input		D_direction;
+input           D_direction;
 
 output          ReadPxo_Event_done;
 output          WritePxo_Event_set;
-output		Write3_Motion_Event_set;
+output          Write3_Motion_Event_set;
 //output          ReadAE_Event_set;
 //output          ReadFDIQ_Event_set;
 
 // CPD
-input		B_ppg_enh;
-input		B_spo2_enh;
-output		cpd_raddr_upd_i2c;
-output		cpd_r_i2c;
+input           B_ppg_enh;
+input           B_spo2_enh;
+output          cpd_raddr_upd_i2c;
+output          cpd_r_i2c;
 
 reg             Dir0x02_issue;
 reg             DirSum_reset;
 reg             busy_protect;
 
 // To XYBuf_Top
-output		reset_xybuf;
-output		latdxy_xybuf;
-output		prelat_xybuf;
+output          reset_xybuf;
+output          latdxy_xybuf;
+output          prelat_xybuf;
 
 output          DirSum_reset;
 output          busy_protect;
@@ -94,16 +94,16 @@ reg             Read2_Event_set;
 reg             ReadPxo_Event_set;
 reg             ReadPxo_Event_done;
 reg             WritePxo_Event_set;
-reg		Write3_Motion_Event_set;
+reg             Write3_Motion_Event_set;
 //reg             ReadAE_Event_set;
 //reg             ReadFDIQ_Event_set;
-reg		cpd_raddr_upd_i2c;
-reg		cpd_r_i2c;
+reg             cpd_raddr_upd_i2c;
+reg             cpd_r_i2c;
 
-wire		sync_SDAO;
-wire		sync_B_i2c_timeout_enh;
+wire            sync_SDAO;
+wire            sync_B_i2c_timeout_enh;
 reg     [14:0]  timer;
-reg		timeout;
+reg             timeout;
 wire            timeout_wire;
 
 // --------------------------------------------
@@ -116,15 +116,15 @@ wire    [6:0]   SLAVE_ID = {1'b0, B_slaveID_state, 5'b1_0011};
 //----------------------------------------------------------------------
 //  BitCnt[3:0]
 //----------------------------------------------------------------------
-wire	BitCnt_eq_0;
-wire	BitCnt_eq_1;
-wire	BitCnt_eq_2;
-wire	BitCnt_eq_3;
-wire	BitCnt_eq_4;
-wire	BitCnt_eq_5;
-wire	BitCnt_eq_6;
-wire	BitCnt_eq_7;
-wire	BitCnt_eq_8;
+wire    BitCnt_eq_0;
+wire    BitCnt_eq_1;
+wire    BitCnt_eq_2;
+wire    BitCnt_eq_3;
+wire    BitCnt_eq_4;
+wire    BitCnt_eq_5;
+wire    BitCnt_eq_6;
+wire    BitCnt_eq_7;
+wire    BitCnt_eq_8;
 
 GATE_BUF BUF_BitCnt_eq_0 (.O(BitCnt_eq_0), .I(BitCnt == 4'd0));
 GATE_BUF BUF_BitCnt_eq_1 (.O(BitCnt_eq_1), .I(BitCnt == 4'd1));
@@ -147,18 +147,18 @@ GATE_MUX2 MUX_StartCmd_Rst (.O(StartCmd_Rst), .S(ATPG_TM), .A(rst | BitCnt_Eq_2)
 // Aki for SDA glitch issue
 always @(posedge SDAI_inv or posedge StartCmd_Rst)
 begin
-  if (StartCmd_Rst)
-    StartCmd_SDA <= 0;
-  else
-    StartCmd_SDA <= (SCL_data);
+    if (StartCmd_Rst)
+        StartCmd_SDA <= 0;
+    else
+        StartCmd_SDA <= (SCL_data);
 end
 
 always @(posedge SCL_inv or posedge StartCmd_Rst)
 begin
-  if (StartCmd_Rst)
-    StartCmd <= 0;
-  else if (StartCmd_SDA)
-    StartCmd <= 1;
+    if (StartCmd_Rst)
+        StartCmd <= 0;
+    else if (StartCmd_SDA)
+        StartCmd <= 1;
 end
 
 //wire  StopCmd_Rst     = ATPG_TM ? rst :(rst | StartCmd);
@@ -167,10 +167,10 @@ GATE_MUX2 MUX_StopCmd_Rst (.O(StopCmd_Rst), .S(ATPG_TM), .A(rst | StartCmd), .B(
 
 always @(posedge SDAI or posedge StopCmd_Rst)
 begin
-  if (StopCmd_Rst)
-    StopCmd <= 0;
-  else
-    StopCmd <= (SCL_data);
+    if (StopCmd_Rst)
+        StopCmd <= 0;
+    else
+        StopCmd <= (SCL_data);
 end
 
 //----------------------------------------------------------------------
@@ -181,21 +181,21 @@ reg AckCmd;
 
 always @(posedge SCL or posedge rst)
 begin
-  if (rst)
-    NackCmd <= 0;
-  else if ((SDAI_data == 1) && (BitCnt == 4'd8))
-    NackCmd <= 1;
-  else if (NackCmd)
-    NackCmd <= 0;
+    if (rst)
+        NackCmd <= 0;
+    else if ((SDAI_data == 1) && (BitCnt == 4'd8))
+        NackCmd <= 1;
+    else if (NackCmd)
+        NackCmd <= 0;
 end
 always @(posedge SCL or posedge rst)
 begin
-  if (rst)
-    AckCmd <= 0;
-  else if ((SDAI_data == 0) && (BitCnt == 4'd8))
-    AckCmd <= 1;
-  else if (AckCmd)
-    AckCmd <= 0;
+    if (rst)
+        AckCmd <= 0;
+    else if ((SDAI_data == 0) && (BitCnt == 4'd8))
+        AckCmd <= 1;
+    else if (AckCmd)
+        AckCmd <= 0;
 end
 
 //----------------------------------------------------------------------
@@ -203,12 +203,12 @@ end
 //----------------------------------------------------------------------
 always @(posedge SCL or posedge rst)
 begin
-  if (rst)
-    BitCnt_Eq_2 <= 1'b0;
-  else if (BitCnt == 1)
-    BitCnt_Eq_2 <= 1'b1;
-  else
-    BitCnt_Eq_2 <= 1'b0;
+    if (rst)
+        BitCnt_Eq_2 <= 1'b0;
+    else if (BitCnt == 1)
+        BitCnt_Eq_2 <= 1'b1;
+    else
+        BitCnt_Eq_2 <= 1'b0;
 end
 
 //----------------------------------------------------------------------
@@ -235,10 +235,10 @@ GATE_MUX2 MUX_I2CSt_Rst (.O(I2CSt_Rst), .S(ATPG_TM), .A(rst | StopCmd | timeout)
 
 always @(posedge SCL or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    I2CSt <= I2CStIdle;
-  else
-    I2CSt <= NxtI2CSt;
+    if (I2CSt_Rst)
+        I2CSt <= I2CStIdle;
+    else
+        I2CSt <= NxtI2CSt;
 end
 
 //----------------------------------------------------------------------
@@ -248,92 +248,92 @@ end
 
 always @(I2CSt or StartCmd or BitCnt or ShiftReg or Rwb or StopCmd or NackCmd or SLAVE_ID)
 begin
-  case (I2CSt)
-    I2CStIdle:
-      begin
-        if (StartCmd)
-          NxtI2CSt = I2CStSlaveID;
-        else
-          NxtI2CSt = I2CStIdle;
-      end
-
-    I2CStSlaveID:
-      begin
-        if (StopCmd)
-          NxtI2CSt = I2CStIdle;
-	else if (StartCmd)
-          NxtI2CSt = I2CStSlaveID;
-        else if (BitCnt == 4'd8)
-          begin
-            if (ShiftReg[7:1] == SLAVE_ID)
-              begin
-                if (Rwb == 1)
-                  NxtI2CSt = I2CStRdData;
-                else
-                  NxtI2CSt = I2CStWrAddr;
-              end
+    case (I2CSt)
+        I2CStIdle:
+        begin
+            if (StartCmd)
+                NxtI2CSt = I2CStSlaveID;
             else
                 NxtI2CSt = I2CStIdle;
-          end
-        else
-          NxtI2CSt = I2CStSlaveID;
-      end
+        end
 
-    I2CStWrAddr:
-      begin
-        if (StopCmd)
-          NxtI2CSt = I2CStIdle;
-	//for repeated start condition
-        else if (StartCmd)
-          NxtI2CSt = I2CStSlaveID;
-        else if (BitCnt == 4'd8)
-          NxtI2CSt = I2CStWrData;
-        else
-          NxtI2CSt = I2CStWrAddr;
-      end
+        I2CStSlaveID:
+        begin
+            if (StopCmd)
+                NxtI2CSt = I2CStIdle;
+            else if (StartCmd)
+                NxtI2CSt = I2CStSlaveID;
+            else if (BitCnt == 4'd8)
+            begin
+                if (ShiftReg[7:1] == SLAVE_ID)
+                begin
+                    if (Rwb == 1)
+                        NxtI2CSt = I2CStRdData;
+                    else
+                        NxtI2CSt = I2CStWrAddr;
+                end
+                else
+                    NxtI2CSt = I2CStIdle;
+            end
+            else
+                NxtI2CSt = I2CStSlaveID;
+        end
 
-    I2CStWrData:
-      begin
-        if (StopCmd)
-          NxtI2CSt = I2CStIdle;
-        //for repeated start condition
-        else if (StartCmd)
-          NxtI2CSt = I2CStSlaveID;
-        else if (BitCnt == 4'd8)
-          NxtI2CSt = I2CStWrData_Next;
-        else
-          NxtI2CSt = I2CStWrData;
-      end
+        I2CStWrAddr:
+        begin
+            if (StopCmd)
+                NxtI2CSt = I2CStIdle;
+            //for repeated start condition
+            else if (StartCmd)
+                NxtI2CSt = I2CStSlaveID;
+            else if (BitCnt == 4'd8)
+                NxtI2CSt = I2CStWrData;
+            else
+                NxtI2CSt = I2CStWrAddr;
+        end
 
-    I2CStWrData_Next:
-      begin
-        if (StopCmd)
-          NxtI2CSt = I2CStIdle;
-        //for repeated start condition
-        else if (StartCmd)
-          NxtI2CSt = I2CStSlaveID;
-        else
-          NxtI2CSt = I2CStWrData_Next;
-      end
+        I2CStWrData:
+        begin
+            if (StopCmd)
+                NxtI2CSt = I2CStIdle;
+            //for repeated start condition
+            else if (StartCmd)
+                NxtI2CSt = I2CStSlaveID;
+            else if (BitCnt == 4'd8)
+                NxtI2CSt = I2CStWrData_Next;
+            else
+                NxtI2CSt = I2CStWrData;
+        end
 
-    I2CStRdData:
-      begin
-        if (StopCmd)
-          NxtI2CSt = I2CStIdle;
-	//for repeated start condition
-        else if (StartCmd)
-          NxtI2CSt = I2CStSlaveID;
-        else if (NackCmd)
-          NxtI2CSt = I2CStIdle;
-        else
-          NxtI2CSt = I2CStRdData;
-      end
+        I2CStWrData_Next:
+        begin
+            if (StopCmd)
+                NxtI2CSt = I2CStIdle;
+            //for repeated start condition
+            else if (StartCmd)
+                NxtI2CSt = I2CStSlaveID;
+            else
+                NxtI2CSt = I2CStWrData_Next;
+        end
 
-    default:
-      begin
-        NxtI2CSt = I2CStIdle;
-      end
-  endcase
+        I2CStRdData:
+        begin
+            if (StopCmd)
+                NxtI2CSt = I2CStIdle;
+            //for repeated start condition
+            else if (StartCmd)
+                NxtI2CSt = I2CStSlaveID;
+            else if (NackCmd)
+                NxtI2CSt = I2CStIdle;
+            else
+                NxtI2CSt = I2CStRdData;
+        end
+
+        default:
+        begin
+            NxtI2CSt = I2CStIdle;
+        end
+    endcase
 end             // I2CFSM
 
 //----------------------------------------------------------------------
@@ -343,15 +343,15 @@ reg SlaveID_Ok;
 
 always @(I2CSt or BitCnt or ShiftReg or SLAVE_ID)
 begin
-  if (I2CSt == I2CStSlaveID && BitCnt == 4'd8)
+    if (I2CSt == I2CStSlaveID && BitCnt == 4'd8)
     begin
-      if (ShiftReg[7:1] == SLAVE_ID)
-        SlaveID_Ok = 1;
-      else
-        SlaveID_Ok = 0;
+        if (ShiftReg[7:1] == SLAVE_ID)
+            SlaveID_Ok = 1;
+        else
+            SlaveID_Ok = 0;
     end
-  else
-    SlaveID_Ok = 0;
+    else
+        SlaveID_Ok = 0;
 end
 
 //----------------------------------------------------------------------
@@ -359,22 +359,22 @@ end
 //----------------------------------------------------------------------
 always @(posedge SCL or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    BitCnt <= 4'd0;
-  else if ((I2CSt != I2CStSlaveID) & StartCmd == 1 ) // for non slave id state to resync by start
-    BitCnt <= 4'd1;
-  else if ((I2CSt == I2CStSlaveID) & StartCmd == 1 & BitCnt != 1) // for slave id state to resync by start
-    BitCnt <= 4'd1;
-  //for error re-sync
-  //else if ((I2CSt == I2CStIdle) && (StartCmd == 1))
-  //  BitCnt <= 4'd1;
-  //for repeated start condition
-  //else if ((I2CSt == I2CStWrData || I2CSt == I2CStWrData_Next) && (StartCmd == 1))
-  //  BitCnt <= 4'd1;
-  else if ((BitCnt == 4'd8))
-    BitCnt <= 4'd0;
-  else
-    BitCnt <= BitCnt + 1;
+    if (I2CSt_Rst)
+        BitCnt <= 4'd0;
+    else if ((I2CSt != I2CStSlaveID) & StartCmd == 1 ) // for non slave id state to resync by start
+        BitCnt <= 4'd1;
+    else if ((I2CSt == I2CStSlaveID) & StartCmd == 1 & BitCnt != 1) // for slave id state to resync by start
+        BitCnt <= 4'd1;
+    //for error re-sync
+    //else if ((I2CSt == I2CStIdle) && (StartCmd == 1))
+    //  BitCnt <= 4'd1;
+    //for repeated start condition
+    //else if ((I2CSt == I2CStWrData || I2CSt == I2CStWrData_Next) && (StartCmd == 1))
+    //  BitCnt <= 4'd1;
+    else if ((BitCnt == 4'd8))
+        BitCnt <= 4'd0;
+    else
+        BitCnt <= BitCnt + 1;
 end
 
 //----------------------------------------------------------------------
@@ -382,15 +382,15 @@ end
 //----------------------------------------------------------------------
 always @(posedge SCL or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    ShiftReg <= 8'b0;
-  //else if (~RtcRd_b)
-  //  ShiftReg <= RtcDataO;
-  //Aki,For Burst Read SDAI=0 for Ack, SDAI=1 for NACK
-  //else if ((BitCnt == 4'd8) && (Rwb == 1) && (SDAI_data == 0))
-  //  ShiftReg <= RtcDataO;
-  else if (BitCnt != 4'd8)
-    ShiftReg <= {ShiftReg[6:0], (SDAI_data)};
+    if (I2CSt_Rst)
+        ShiftReg <= 8'b0;
+    //else if (~RtcRd_b)
+    //  ShiftReg <= RtcDataO;
+    //Aki,For Burst Read SDAI=0 for Ack, SDAI=1 for NACK
+    //else if ((BitCnt == 4'd8) && (Rwb == 1) && (SDAI_data == 0))
+    //  ShiftReg <= RtcDataO;
+    else if (BitCnt != 4'd8)
+        ShiftReg <= {ShiftReg[6:0], (SDAI_data)};
 end
 
 wire    [7:0]   RtcDataI = ShiftReg;
@@ -400,10 +400,10 @@ wire    [7:0]   RtcDataI = ShiftReg;
 //----------------------------------------------------------------------
 always @(posedge SCL or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    Rwb <= 1'b0;
-  else if ((BitCnt == 4'd7) && (I2CSt == I2CStSlaveID))
-    Rwb <= (SDAI_data);
+    if (I2CSt_Rst)
+        Rwb <= 1'b0;
+    else if ((BitCnt == 4'd7) && (I2CSt == I2CStSlaveID))
+        Rwb <= (SDAI_data);
 end
 
 //----------------------------------------------------------------------
@@ -414,20 +414,20 @@ wire    [6:0]   RtcAddr_add1 = (RtcAddr[6:0] + 'd1);
 
 always @(posedge SCL or posedge rst)
 begin
-  if (rst)
-    RtcAddr <= 8'b0;
-  else if ((BitCnt == 4'd8) && (I2CSt == I2CStWrAddr))                                //single mode
-    RtcAddr <= ShiftReg[7:0];
-  //else if ((BitCnt == 4'd0) && (I2CSt == I2CStWrData_Next) && (Rwb == 0))             //write burst mode
-  else if ((BitCnt == 4'd0) && (I2CSt == I2CStWrData_Next) && (Rwb == 0) && ~RtcAddr[7]) //write burst mode
-    RtcAddr <= {RtcAddr[7],RtcAddr_add1};
-  //else if ((BitCnt == 4'd7) && (I2CSt == I2CStRdData) && (Rwb == 1))                  //read burst mode for pre-fetch
-  else if ((BitCnt == 4'd7) && (I2CSt == I2CStRdData) && (Rwb == 1) && ~RtcAddr[7]) begin //read burst mode for pre-fetch
-    if (RtcAddr[6:0] == CPD_ADDR)
-        RtcAddr <=  RtcAddr;
-    else
+    if (rst)
+        RtcAddr <= 8'b0;
+    else if ((BitCnt == 4'd8) && (I2CSt == I2CStWrAddr))                                //single mode
+        RtcAddr <= ShiftReg[7:0];
+    //else if ((BitCnt == 4'd0) && (I2CSt == I2CStWrData_Next) && (Rwb == 0))             //write burst mode
+    else if ((BitCnt == 4'd0) && (I2CSt == I2CStWrData_Next) && (Rwb == 0) && ~RtcAddr[7]) //write burst mode
         RtcAddr <= {RtcAddr[7],RtcAddr_add1};
-  end
+    //else if ((BitCnt == 4'd7) && (I2CSt == I2CStRdData) && (Rwb == 1))                  //read burst mode for pre-fetch
+    else if ((BitCnt == 4'd7) && (I2CSt == I2CStRdData) && (Rwb == 1) && ~RtcAddr[7]) begin //read burst mode for pre-fetch
+        if (RtcAddr[6:0] == CPD_ADDR)
+            RtcAddr <=  RtcAddr;
+        else
+            RtcAddr <= {RtcAddr[7],RtcAddr_add1};
+    end
 end
 
 wire    Write10_set = ((B_banksel == 'd0) & (RtcAddr[6:0] == 'd10) & (I2CSt == I2CStWrData_Next) & (BitCnt == 'd0));
@@ -440,13 +440,13 @@ wire    Write3_set = ((B_banksel == 'd0) & (RtcAddr[6:0] == 'd3) & (I2CSt == I2C
 //always @(posedge SCL or posedge rst)
 always @(posedge SCL or posedge I2CSt_Rst)
 begin
-//  if (rst)
-  if (I2CSt_Rst)
-    Write3_Motion_Event_set <= 1'b0;
-  else if (Write3_set)
-    Write3_Motion_Event_set <= B_w3clr_enh;
-  else if (BitCnt_eq_8)
-    Write3_Motion_Event_set <= 1'b0;
+    //  if (rst)
+    if (I2CSt_Rst)
+        Write3_Motion_Event_set <= 1'b0;
+    else if (Write3_set)
+        Write3_Motion_Event_set <= B_w3clr_enh;
+    else if (BitCnt_eq_8)
+        Write3_Motion_Event_set <= 1'b0;
 end
 
 //----------------------------------------------------------------------
@@ -457,10 +457,10 @@ wire    Write15_set = ((B_banksel == 'd0) & (RtcAddr[6:0] == 'd15) & (I2CSt == I
 
 always @(posedge SCL or posedge rst)
 begin
-  if (rst)
-    WritePxo_Event_set <= 1'b0;
-  else
-    WritePxo_Event_set <= Write15_set;
+    if (rst)
+        WritePxo_Event_set <= 1'b0;
+    else
+        WritePxo_Event_set <= Write15_set;
 end
 
 
@@ -477,21 +477,21 @@ GATE_MUX2    MUX_RtcWr_b   (.O( RtcWr_b_SCL_inv ), .S( ATPG_TM ), .A( SCL_inv ),
 // for this reason, datavalid needs to early toggle 1T for FPGA
 always @(posedge RtcWr_b_SCL_inv or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    RtcWr_b <= 1'b1;
+    if (I2CSt_Rst)
+        RtcWr_b <= 1'b1;
 `ifdef FPGA
-  else if ((BitCnt == 4'd7) && (I2CSt == I2CStWrData) && (Rwb == 1'b0))
-    RtcWr_b <= 1'b0;
-  else if ((BitCnt == 4'd7) && (I2CSt == I2CStWrData_Next) && (Rwb == 1'b0))
-    RtcWr_b <= 1'b0;
+    else if ((BitCnt == 4'd7) && (I2CSt == I2CStWrData) && (Rwb == 1'b0))
+        RtcWr_b <= 1'b0;
+    else if ((BitCnt == 4'd7) && (I2CSt == I2CStWrData_Next) && (Rwb == 1'b0))
+        RtcWr_b <= 1'b0;
 `else
-  else if ((BitCnt == 4'd8) && (I2CSt == I2CStWrData) && (Rwb == 1'b0))
-    RtcWr_b <= 1'b0;
-  else if ((BitCnt == 4'd8) && (I2CSt == I2CStWrData_Next) && (Rwb == 1'b0))
-    RtcWr_b <= 1'b0;
+    else if ((BitCnt == 4'd8) && (I2CSt == I2CStWrData) && (Rwb == 1'b0))
+        RtcWr_b <= 1'b0;
+    else if ((BitCnt == 4'd8) && (I2CSt == I2CStWrData_Next) && (Rwb == 1'b0))
+        RtcWr_b <= 1'b0;
 `endif
-  else
-    RtcWr_b <= 1'b1;
+    else
+        RtcWr_b <= 1'b1;
 end
 
 //----------------------------------------------------------------------
@@ -499,29 +499,29 @@ end
 //----------------------------------------------------------------------
 always @(posedge SCL_inv or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    RtcRd_b <= 1'b1;
-  else if ((BitCnt == 4'd8) && (I2CSt == I2CStSlaveID) && (Rwb == 1'b1))
-    RtcRd_b <= 1'b0;
-  else if ((BitCnt == 4'd8) && (I2CSt == I2CStRdData) && (Rwb == 1'b1))
-    RtcRd_b <= 1'b0;
-  else
-    RtcRd_b <= 1'b1;
+    if (I2CSt_Rst)
+        RtcRd_b <= 1'b1;
+    else if ((BitCnt == 4'd8) && (I2CSt == I2CStSlaveID) && (Rwb == 1'b1))
+        RtcRd_b <= 1'b0;
+    else if ((BitCnt == 4'd8) && (I2CSt == I2CStRdData) && (Rwb == 1'b1))
+        RtcRd_b <= 1'b0;
+    else
+        RtcRd_b <= 1'b1;
 end
 
 //----------------------------------------------------------------------
 //  prelat_xybuf
 //----------------------------------------------------------------------
-reg	prelat_read;
+reg     prelat_read;
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-   if (I2CSt_Rst)
-      prelat_read  <= 0;
-   else if (I2CSt == I2CStSlaveID) begin
-      if (BitCnt_eq_1)
-         prelat_read  <= 1;
-      else if (BitCnt_eq_8)
-         prelat_read  <= 0;
-   end
+    if (I2CSt_Rst)
+        prelat_read  <= 0;
+    else if (I2CSt == I2CStSlaveID) begin
+        if (BitCnt_eq_1)
+            prelat_read  <= 1;
+        else if (BitCnt_eq_8)
+            prelat_read  <= 0;
+    end
 
 assign prelat_xybuf = prelat_read;
 
@@ -533,34 +533,34 @@ wire    Read_Event = BitCnt[3] & Rwb & (SlaveID_Ok || ((I2CSt == I2CStRdData) & 
 // when B_i2c_rd1_latdxy=1:  read-1 will trigger Read2_Event (align to PKN260)
 //                      =0 (default)
 //wire    Read2_Event_set_wire = Read_Event & (B_banksel=='d0) & (RtcAddr[6:0] == 'd2);
-wire	Read2_Event_vld = B_i2c_rd1_latdxy ? 1'b1 : (I2CSt == I2CStSlaveID);
+wire    Read2_Event_vld = B_i2c_rd1_latdxy ? 1'b1 : (I2CSt == I2CStSlaveID);
 wire    Read2_Event_set_wire = Read_Event & (B_banksel=='d0) & (RtcAddr[6:0] == 'd2) & Read2_Event_vld;
 
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    Read2_Event_set <= 1'b0;
-  else
-    Read2_Event_set <= Read2_Event_set_wire;
+    if (I2CSt_Rst)
+        Read2_Event_set <= 1'b0;
+    else
+        Read2_Event_set <= Read2_Event_set_wire;
 
 assign latdxy_xybuf = Read2_Event_set;
 
-reg	latdxy_xybuf_d1;
+reg     latdxy_xybuf_d1;
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    latdxy_xybuf_d1 <= 0;
-  else if (latdxy_xybuf)
-    latdxy_xybuf_d1 <= 1;
-  else if (latdxy_xybuf_d1)
-    latdxy_xybuf_d1 <= 0;
+    if (I2CSt_Rst)
+        latdxy_xybuf_d1 <= 0;
+    else if (latdxy_xybuf)
+        latdxy_xybuf_d1 <= 1;
+    else if (latdxy_xybuf_d1)
+        latdxy_xybuf_d1 <= 0;
 
-reg	reset_xybuf;
+reg     reset_xybuf;
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    reset_xybuf <= 0;
-  else if (latdxy_xybuf_d1)
-    reset_xybuf <= 1;
-  else if (BitCnt[3])		// increase pulse width for xyclk CDCSync
-    reset_xybuf <= 0;
+    if (I2CSt_Rst)
+        reset_xybuf <= 0;
+    else if (latdxy_xybuf_d1)
+        reset_xybuf <= 1;
+    else if (BitCnt[3])           // increase pulse width for xyclk CDCSync
+        reset_xybuf <= 0;
 
 //----------------------------------------------------------------------
 //  Dir0x02_issue, DirSum_reset, busy_protect
@@ -595,21 +595,21 @@ always @(posedge SCL_inv or posedge I2CSt_Rst)
 wire    ReadPxo_Event_set_wire = Read_Event & (B_banksel=='d0) & (RtcAddr[6:0] == 'd15);
 
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    ReadPxo_Event_set <= 1'b0;
-  else
-    ReadPxo_Event_set <= ReadPxo_Event_set_wire;
+    if (I2CSt_Rst)
+        ReadPxo_Event_set <= 1'b0;
+    else
+        ReadPxo_Event_set <= ReadPxo_Event_set_wire;
 
 //----------------------------------------------------------------------
 //  ReadPxo_Event_done
 //----------------------------------------------------------------------
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    ReadPxo_Event_done <= 1'b0;
-  else if (BitCnt[3])
-    ReadPxo_Event_done <= 1'b0;
-  else if (ReadPxo_Event_set)
-    ReadPxo_Event_done <= 1'b1;
+    if (I2CSt_Rst)
+        ReadPxo_Event_done <= 1'b0;
+    else if (BitCnt[3])
+        ReadPxo_Event_done <= 1'b0;
+    else if (ReadPxo_Event_set)
+        ReadPxo_Event_done <= 1'b1;
 
 //----------------------------------------------------------------------
 //  ReadCPD_Event_set
@@ -617,16 +617,16 @@ always @(posedge SCL_inv or posedge I2CSt_Rst)
 wire    ReadCPD_Event_set_wire = Read_Event & (B_banksel=='d0) & (RtcAddr[6:0] == CPD_ADDR);
 
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    cpd_raddr_upd_i2c <= 1'b0;
-  else
-    cpd_raddr_upd_i2c <= cpd_r_i2c & (BitCnt == 'd5);
+    if (I2CSt_Rst)
+        cpd_raddr_upd_i2c <= 1'b0;
+    else
+        cpd_raddr_upd_i2c <= cpd_r_i2c & (BitCnt == 'd5);
 
 always @(posedge SCL_inv or posedge I2CSt_Rst)
-  if (I2CSt_Rst)
-    cpd_r_i2c <= 1'b0;
-  else if ((B_ppg_enh | B_spo2_enh) & ReadCPD_Event_set_wire)
-    cpd_r_i2c <= 1'b1;
+    if (I2CSt_Rst)
+        cpd_r_i2c <= 1'b0;
+    else if ((B_ppg_enh | B_spo2_enh) & ReadCPD_Event_set_wire)
+        cpd_r_i2c <= 1'b1;
 
 //----------------------------------------------------------------------
 //  TXShiftReg
@@ -635,12 +635,12 @@ wire    TX_bit;
 
 always @(posedge SCL_inv or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    TXShiftReg <= {7{1'b1}};
-  else if (~RtcRd_b)
-    TXShiftReg <= RtcDataO[6:0];
-  else
-    TXShiftReg <= {TXShiftReg[5:0],1'b1};
+    if (I2CSt_Rst)
+        TXShiftReg <= {7{1'b1}};
+    else if (~RtcRd_b)
+        TXShiftReg <= RtcDataO[6:0];
+    else
+        TXShiftReg <= {TXShiftReg[5:0],1'b1};
 end
 
 assign  TX_bit = (RtcRd_b)? TXShiftReg[6] : RtcDataO[7];
@@ -657,31 +657,31 @@ wire            SDAO;
 
 always @(posedge SCL_inv or posedge I2CSt_Rst)
 begin
-  if (I2CSt_Rst)
-    SDAO_tmp <= 1;
-  else if (StartCmd_SDA)
-    SDAO_tmp <= 1;
-  else if (BitCnt == 4'd8)
+    if (I2CSt_Rst)
+        SDAO_tmp <= 1;
+    else if (StartCmd_SDA)
+        SDAO_tmp <= 1;
+    else if (BitCnt == 4'd8)
     begin
-      if (I2CSt == I2CStSlaveID)
+        if (I2CSt == I2CStSlaveID)
         begin
-          if (SlaveID_Ok == 1)
-            SDAO_tmp <= 0; // send ACK to host
-          else
-            SDAO_tmp <= 1; // send NACK to host
+            if (SlaveID_Ok == 1)
+                SDAO_tmp <= 0; // send ACK to host
+            else
+                SDAO_tmp <= 1; // send NACK to host
         end
-      else if (I2CSt == I2CStIdle)  //release wrong slave ID read
-        SDAO_tmp <= 1; // receive re-START/STOP from host
-      else if ((Rwb == 1) && (I2CSt == I2CStRdData))
-        SDAO_tmp <= 1; // receive ACK from host
-      else
-        SDAO_tmp <= 0; // send ACK to host
+        else if (I2CSt == I2CStIdle)  //release wrong slave ID read
+            SDAO_tmp <= 1; // receive re-START/STOP from host
+        else if ((Rwb == 1) && (I2CSt == I2CStRdData))
+            SDAO_tmp <= 1; // receive ACK from host
+        else
+            SDAO_tmp <= 0; // send ACK to host
     end
-  else if (((Rwb == 1'b0) && (BitCnt == 4'b0)) || ((Rwb == 1'b1) && (BitCnt == 4'b0) && (I2CSt == I2CStRdData) && (NackCmd == 1)))
-    SDAO_tmp <= 1; // receive re-START/STOP from host
-  else if ((Rwb == 1) && (I2CSt == I2CStRdData))
-    //SDAO_tmp <= ShiftReg[7];
-    SDAO_tmp <= TX_bit;
+    else if (((Rwb == 1'b0) && (BitCnt == 4'b0)) || ((Rwb == 1'b1) && (BitCnt == 4'b0) && (I2CSt == I2CStRdData) && (NackCmd == 1)))
+        SDAO_tmp <= 1; // receive re-START/STOP from host
+    else if ((Rwb == 1) && (I2CSt == I2CStRdData))
+        //SDAO_tmp <= ShiftReg[7];
+        SDAO_tmp <= TX_bit;
 end
 
 //dalay for avoid negedge SDAO violation => StartCmd_SDA
@@ -704,35 +704,35 @@ assign #10ps SDAO       = SDAO_tmp_d ;
 //----------------------------------------------------------------------
 
 CDCSync_Signal_ResetH CDCSync_SDAO (
-        .DI(SDAO),
-        .CLK(lpoclk),
-        .RSTn(C_purstb_lpo),
-        .DO(sync_SDAO)
+    .DI(SDAO),
+    .CLK(lpoclk),
+    .RSTn(C_purstb_lpo),
+    .DO(sync_SDAO)
 );
 
 CDCSync_Signal_ResetL CDCSync_B_i2c_timeout_enh (
-        .DI(B_i2c_timeout_enh),
-        .CLK(lpoclk),
-        .RSTn(C_purstb_lpo),
-        .DO(sync_B_i2c_timeout_enh)
+    .DI(B_i2c_timeout_enh),
+    .CLK(lpoclk),
+    .RSTn(C_purstb_lpo),
+    .DO(sync_B_i2c_timeout_enh)
 );
 
 assign  timeout_wire    = (timer >= {B_i2c_timeout[1:0],13'h1fff});
 
 always @ (posedge lpoclk or negedge C_purstb_lpo)
-  if (~C_purstb_lpo)
-     timer <= 'd0;
-  else if (sync_SDAO || timeout_wire || ~sync_B_i2c_timeout_enh)
-     timer <= 'd0;
-  else
-     timer <= timer + 'd1;
+    if (~C_purstb_lpo)
+        timer <= 'd0;
+    else if (sync_SDAO || timeout_wire || ~sync_B_i2c_timeout_enh)
+        timer <= 'd0;
+    else
+        timer <= timer + 'd1;
 
 always @ (posedge lpoclk or negedge C_purstb_lpo)
-  if (~C_purstb_lpo)
-     timeout <= 1'b0;
-  else if (sync_B_i2c_timeout_enh)
-     timeout <= timeout_wire;
-  else
-     timeout <= 1'b0;
+    if (~C_purstb_lpo)
+        timeout <= 1'b0;
+    else if (sync_B_i2c_timeout_enh)
+        timeout <= timeout_wire;
+    else
+        timeout <= 1'b0;
 
 endmodule          //IF_I2C_Slave

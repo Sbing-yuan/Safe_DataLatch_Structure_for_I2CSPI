@@ -1,17 +1,17 @@
 module B_SpiCtl(
-   /*AUTOARG*/
-   // Outputs
-   r_sdo, datavalid, r_sdiotri_enh, p_bankdata, p_bankaddr,
-   RdPix_Done, RdPix_Rst, RdPix_Rst_pxck, write3, reset_xybuf,
-   latdxy_xybuf, prelat_xybuf, DirSum_reset, busy_protect, cpd_r_spi,
-   cpd_raddr_upd_spi,
-   // Inputs
-   ATPG_TM, ATPG_RSTB, sclk, sclk_inv, rst_n, i_ncs, B_4wspi_ncs0,
-   sysclk, C_purstb_px, i_sdi, B_bankdata, B_banksel, B_w3clr_enh,
-   B_ppg_enh, B_spo2_enh, B_spi_burstrd_enh, B_burstrd_1dummy,
-   B_burstrd_saddr, B_burstrd_waddr, B_burstrd_1addr, B_burstrd_2addr,
-   lpoclk, B_rstspi_th, D_direction
-   );
+    /*AUTOARG*/
+    // Outputs
+    r_sdo, datavalid, r_sdiotri_enh, p_bankdata, p_bankaddr,
+    RdPix_Done, RdPix_Rst, RdPix_Rst_pxck, write3, reset_xybuf,
+    latdxy_xybuf, prelat_xybuf, DirSum_reset, busy_protect, cpd_r_spi,
+    cpd_raddr_upd_spi,
+    // Inputs
+    ATPG_TM, ATPG_RSTB, sclk, sclk_inv, rst_n, i_ncs, B_4wspi_ncs0,
+    sysclk, C_purstb_px, i_sdi, B_bankdata, B_banksel, B_w3clr_enh,
+    B_ppg_enh, B_spo2_enh, B_spi_burstrd_enh, B_burstrd_1dummy,
+    B_burstrd_saddr, B_burstrd_waddr, B_burstrd_1addr, B_burstrd_2addr,
+    lpoclk, B_rstspi_th, D_direction
+);
 
 //=============================================================================
 //                          Parameters Declaration
@@ -22,8 +22,8 @@ parameter       STBY     = 3'b000,
                 ADDR     = 3'b001,
                 READ     = 3'b010,
                 WRITE    = 3'b011,
-                BURST    = 3'b101,	// Add by YaoHsuan 2019.4.1 Seperate with READ
-                DUMMY    = 3'b110;	// Add by Littlerice 2023.3.29 Seperate from BURST
+                BURST    = 3'b101,      // Add by YaoHsuan 2019.4.1 Seperate with READ
+                DUMMY    = 3'b110;      // Add by Littlerice 2023.3.29 Seperate from BURST
 
 `include "./def_para.v"
 //=============================================================================
@@ -38,9 +38,9 @@ input           ATPG_RSTB;
 
 input           sclk;
 input           sclk_inv;
-input		rst_n;
+input           rst_n;
 input           i_ncs;
-input		B_4wspi_ncs0;
+input           B_4wspi_ncs0;
 
 input           sysclk;
 input           C_purstb_px;
@@ -50,21 +50,21 @@ input   [7:0]   B_bankdata;
 input   [2:0]   B_banksel;
 
 input           B_w3clr_enh;
-input		B_ppg_enh;
-input		B_spo2_enh;
+input           B_ppg_enh;
+input           B_spo2_enh;
 
 // Burst read
 input           B_spi_burstrd_enh;
-input		B_burstrd_1dummy;
-input	[7:0]	B_burstrd_saddr;
+input           B_burstrd_1dummy;
+input   [7:0]   B_burstrd_saddr;
 input           B_burstrd_waddr;
-input		B_burstrd_1addr;
-input		B_burstrd_2addr;
+input           B_burstrd_1addr;
+input           B_burstrd_2addr;
 
-input		lpoclk;
+input           lpoclk;
 input   [7:0]   B_rstspi_th;
 
-input		D_direction;
+input           D_direction;
 
 //=============================================================================//
 //                          Output Port Declaration                            //
@@ -85,15 +85,15 @@ output          RdPix_Rst_pxck;
 
 // XYBuf_Top
 output          write3;
-output		reset_xybuf;
+output          reset_xybuf;
 output          latdxy_xybuf;
-output		prelat_xybuf;
+output          prelat_xybuf;
 
 output          DirSum_reset;
 output          busy_protect;
 
-output		cpd_r_spi;
-output		cpd_raddr_upd_spi;
+output          cpd_r_spi;
+output          cpd_raddr_upd_spi;
 
 //=============================================================================//
 //                          Registers Declaration                              //
@@ -101,61 +101,61 @@ output		cpd_raddr_upd_spi;
 //Constraint1 :                                                                //
 //=============================================================================//
 
-wire		spirstb;
-wire		ATPG_spirstb;
+wire            spirstb;
+wire            ATPG_spirstb;
 
-wire	[7:0]	p_bankdata;
-reg	[6:0]	p_bankaddr;
-reg	[6:0]	p_bankaddr_nxt;
-reg		r_sdiotri_enh;
-reg		reset_xybuf;
+wire    [7:0]   p_bankdata;
+reg     [6:0]   p_bankaddr;
+reg     [6:0]   p_bankaddr_nxt;
+reg             r_sdiotri_enh;
+reg             reset_xybuf;
 
-reg	[2:0]	spistate;
-reg	[2:0]	count_spi;
-reg	[7:0]	ibuf;
-reg	[6:0]	ibuf_d1;
-reg	[7:0]	obuf;
+reg     [2:0]   spistate;
+reg     [2:0]   count_spi;
+reg     [7:0]   ibuf;
+reg     [6:0]   ibuf_d1;
+reg     [7:0]   obuf;
 
-reg		burstrd_2addr_init;
+reg             burstrd_2addr_init;
 reg             DirSum_reset;
 reg             busy_protect;
 reg             Dir0x02_issue;
 
 //-- RdPix
-wire		r_sdo;
-wire		datavalid;
+wire            r_sdo;
+wire            datavalid;
 
 //---------burst mode
-wire		burstrd_by_waddr;
-wire		burstrd_by_raddr;
+wire            burstrd_by_waddr;
+wire            burstrd_by_raddr;
 
 //negedge sync set
-wire		latdxy_set;
-wire		spi_Read2_set;
-wire		spi_Write2_set;
-reg		spi_Write2;
-reg		spi_Read2;
+wire            latdxy_set;
+wire            spi_Read2_set;
+wire            spi_Write2_set;
+reg             spi_Write2;
+reg             spi_Read2;
 //posedge sync set
-wire		spi_Write3_set;
-wire		spi_Read15_set;
-wire		spi_Write15_set;
+wire            spi_Write3_set;
+wire            spi_Read15_set;
+wire            spi_Write15_set;
 //negedge sync set
-wire		RdPix_Done;
-wire		RdPix_Rst;
-reg		spi_RdPix_Done;
-reg		spi_RdPix_Rst;
+wire            RdPix_Done;
+wire            RdPix_Rst;
+reg             spi_RdPix_Done;
+reg             spi_RdPix_Rst;
 
-reg		prelat;
-reg		latdxy;
-wire		prelat_vld;
+reg             prelat;
+reg             latdxy;
+wire            prelat_vld;
 
-reg		write3;
-reg		rstspi_flg;
-reg	[7:0]	resync_timer;
-reg		spi_WriteBRSA;
-reg		spi_ReadBRSA;
-reg		cpd_r_spi;
-reg		cpd_raddr_upd_spi;
+reg             write3;
+reg             rstspi_flg;
+reg     [7:0]   resync_timer;
+reg             spi_WriteBRSA;
+reg             spi_ReadBRSA;
+reg             cpd_r_spi;
+reg             cpd_raddr_upd_spi;
 
 assign burstrd_by_raddr = B_spi_burstrd_enh & ~B_burstrd_waddr;
 assign burstrd_by_waddr = B_spi_burstrd_enh &  B_burstrd_waddr;
@@ -195,17 +195,17 @@ assign  datavalid  = ((spistate == WRITE) & count6_flg);
 assign  datavalid  = ((spistate == WRITE) & count7_flg);
 `endif
 
-assign Read_Event		= ~ibuf_d1[6] & count7_flg & (spistate == ADDR);
-assign Write_Event		=  ibuf_d1[6] & count7_flg & (spistate == ADDR);
+assign Read_Event               = ~ibuf_d1[6] & count7_flg & (spistate == ADDR);
+assign Write_Event              =  ibuf_d1[6] & count7_flg & (spistate == ADDR);
 
-assign spi_Read2_set	= Read_Event  & ({ibuf_d1[5:0],i_sdi} == 7'd2 ) & (B_banksel == 'd0);
-assign spi_Read15_set	= Read_Event  & ({ibuf_d1[5:0],i_sdi} == 7'd15) & (B_banksel == 'd0);
-assign spi_Write2_set	= Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd2 ) & (B_banksel == 'd0);
-assign spi_Write3_set	= Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd3 ) & (B_banksel == 'd0);
-assign spi_Write15_set	= Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd15) & (B_banksel == 'd0);
+assign spi_Read2_set    = Read_Event  & ({ibuf_d1[5:0],i_sdi} == 7'd2 ) & (B_banksel == 'd0);
+assign spi_Read15_set   = Read_Event  & ({ibuf_d1[5:0],i_sdi} == 7'd15) & (B_banksel == 'd0);
+assign spi_Write2_set   = Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd2 ) & (B_banksel == 'd0);
+assign spi_Write3_set   = Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd3 ) & (B_banksel == 'd0);
+assign spi_Write15_set  = Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd15) & (B_banksel == 'd0);
 
-assign spi_Read80_set	= ~B_burstrd_waddr & Read_Event  & ({ibuf_d1[5:0],i_sdi} == 7'd80) & (B_banksel == 'd0);
-assign spi_Write80_set	=  B_burstrd_waddr & Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd80) & (B_banksel == 'd0);
+assign spi_Read80_set   = ~B_burstrd_waddr & Read_Event  & ({ibuf_d1[5:0],i_sdi} == 7'd80) & (B_banksel == 'd0);
+assign spi_Write80_set  =  B_burstrd_waddr & Write_Event & ({ibuf_d1[5:0],i_sdi} == 7'd80) & (B_banksel == 'd0);
 
 assign spi_ReadBRSA_set = Read_Event  & ({ibuf_d1[5:0],i_sdi} == B_burstrd_saddr[6:0]) & burstrd_by_raddr;
 assign spi_WriteBRSA_set= Write_Event & ({ibuf_d1[5:0],i_sdi} == B_burstrd_saddr[6:0]) & burstrd_by_waddr;
@@ -245,121 +245,121 @@ always @ (posedge sclk_inv or negedge spirstb)
         spistate <= STBY;
     end else
         case (spistate) // SPI1--------------------------------------
-        STBY:
-        begin
-            count_spi <= 3'd0;
-            r_sdiotri_enh <= 1;
-            obuf[7:0] <= 8'hff;
-            spistate <= ADDR;
-        end
-        ADDR:
-	begin
-            if (count7_flg) begin
-                if (ibuf[7]==1) begin  // write
-                    count_spi <= 3'd0;
-                    if(burstrd_by_waddr) begin
-                        r_sdiotri_enh <= (spi_WriteBRSA) ? 0 : 1;
-                        obuf[7:0]     <= (spi_WriteBRSA) ? B_bankdata : 8'hff;
-                        spistate      <= (spi_WriteBRSA) ? (B_burstrd_1dummy ? DUMMY : BURST) : WRITE;
-                    end
-                    else begin
-                        r_sdiotri_enh <= 1;
-                        obuf[7:0]     <= 8'hff;
-                        spistate      <= WRITE;
-                    end
-                end
-                else begin		// read
-                    count_spi <= 3'd0;
-                    r_sdiotri_enh <= 0;
-                    obuf[7:0] <= B_bankdata;
-                    if(burstrd_by_raddr) begin
-                        spistate <= (spi_ReadBRSA) ? (B_burstrd_1dummy ? DUMMY : BURST) : READ;
-                    end
-                    else
-                        spistate <= READ;
-                end
-            end
-            else begin
-                count_spi <= count_spi + 1;
-                r_sdiotri_enh <= 1;
-                obuf[7:0] <= 8'hff;
-                spistate <= ADDR;
-            end
-        end
-        WRITE:
-	begin
-            if (count7_flg) begin
+            STBY:
+            begin
                 count_spi <= 3'd0;
                 r_sdiotri_enh <= 1;
                 obuf[7:0] <= 8'hff;
                 spistate <= ADDR;
             end
-            else begin
-                count_spi <= count_spi + 1;
-                r_sdiotri_enh <= 1;
-                obuf[7:0] <= 8'hff;
-                spistate <= WRITE;
-            end
-	end
-        READ:
-	begin
-            if (count7_flg) begin
-                count_spi <= 3'd0;
-                r_sdiotri_enh <= 1;
-                obuf[7:0] <= 8'hff;
-                spistate <= ADDR;
-            end
-            else begin
-                count_spi <= count_spi + 1;
-                r_sdiotri_enh <= 0;
-                obuf[0] <= 1;
-                obuf[7:1] <= obuf[6:0];
-                spistate <= READ;
-            end
-	end
-	DUMMY:
-        begin
-            if (count7_flg) begin
-                count_spi <= 3'd0;
-                obuf[7:0] <= B_bankdata;
-                spistate  <= BURST;
-            end
-            else begin
-              count_spi <= count_spi + 1;
-              obuf[0] <= 1;
-              obuf[7:1] <= obuf[6:0];
-              spistate <= DUMMY;
-            end
-        end
-	BURST:
-	begin
-            if (count7_flg) begin
-                count_spi <= 3'd0;
-                if(B_spi_burstrd_enh) begin
-                    obuf[7:0]     <= B_bankdata;
-                    spistate      <= BURST;
-                    r_sdiotri_enh <= 0;
+            ADDR:
+            begin
+                if (count7_flg) begin
+                    if (ibuf[7]==1) begin  // write
+                        count_spi <= 3'd0;
+                        if(burstrd_by_waddr) begin
+                            r_sdiotri_enh <= (spi_WriteBRSA) ? 0 : 1;
+                            obuf[7:0]     <= (spi_WriteBRSA) ? B_bankdata : 8'hff;
+                            spistate      <= (spi_WriteBRSA) ? (B_burstrd_1dummy ? DUMMY : BURST) : WRITE;
+                        end
+                        else begin
+                            r_sdiotri_enh <= 1;
+                            obuf[7:0]     <= 8'hff;
+                            spistate      <= WRITE;
+                        end
+                    end
+                    else begin              // read
+                        count_spi <= 3'd0;
+                        r_sdiotri_enh <= 0;
+                        obuf[7:0] <= B_bankdata;
+                        if(burstrd_by_raddr) begin
+                            spistate <= (spi_ReadBRSA) ? (B_burstrd_1dummy ? DUMMY : BURST) : READ;
+                        end
+                        else
+                            spistate <= READ;
+                    end
                 end
                 else begin
-                    obuf[7:0] <= 8'hff;
-                    spistate  <= ADDR;
+                    count_spi <= count_spi + 1;
                     r_sdiotri_enh <= 1;
+                    obuf[7:0] <= 8'hff;
+                    spistate <= ADDR;
                 end
             end
-            else begin
-              count_spi <= count_spi + 1;
-              r_sdiotri_enh <= 0;
-              obuf[0] <= 1;
-              obuf[7:1] <= obuf[6:0];
-              spistate <= BURST;
+            WRITE:
+            begin
+                if (count7_flg) begin
+                    count_spi <= 3'd0;
+                    r_sdiotri_enh <= 1;
+                    obuf[7:0] <= 8'hff;
+                    spistate <= ADDR;
+                end
+                else begin
+                    count_spi <= count_spi + 1;
+                    r_sdiotri_enh <= 1;
+                    obuf[7:0] <= 8'hff;
+                    spistate <= WRITE;
+                end
             end
-	end
+            READ:
+            begin
+                if (count7_flg) begin
+                    count_spi <= 3'd0;
+                    r_sdiotri_enh <= 1;
+                    obuf[7:0] <= 8'hff;
+                    spistate <= ADDR;
+                end
+                else begin
+                    count_spi <= count_spi + 1;
+                    r_sdiotri_enh <= 0;
+                    obuf[0] <= 1;
+                    obuf[7:1] <= obuf[6:0];
+                    spistate <= READ;
+                end
+            end
+            DUMMY:
+            begin
+                if (count7_flg) begin
+                    count_spi <= 3'd0;
+                    obuf[7:0] <= B_bankdata;
+                    spistate  <= BURST;
+                end
+                else begin
+                    count_spi <= count_spi + 1;
+                    obuf[0] <= 1;
+                    obuf[7:1] <= obuf[6:0];
+                    spistate <= DUMMY;
+                end
+            end
+            BURST:
+            begin
+                if (count7_flg) begin
+                    count_spi <= 3'd0;
+                    if(B_spi_burstrd_enh) begin
+                        obuf[7:0]     <= B_bankdata;
+                        spistate      <= BURST;
+                        r_sdiotri_enh <= 0;
+                    end
+                    else begin
+                        obuf[7:0] <= 8'hff;
+                        spistate  <= ADDR;
+                        r_sdiotri_enh <= 1;
+                    end
+                end
+                else begin
+                    count_spi <= count_spi + 1;
+                    r_sdiotri_enh <= 0;
+                    obuf[0] <= 1;
+                    obuf[7:1] <= obuf[6:0];
+                    spistate <= BURST;
+                end
+            end
 
         endcase
 
 always @ (posedge sclk or negedge spirstb) begin
     if (~spirstb)
-//        p_bankaddr <= 7'b000_0011;
+        //        p_bankaddr <= 7'b000_0011;
         p_bankaddr <= 7'd0;
     else
         p_bankaddr <= p_bankaddr_nxt;
@@ -455,7 +455,7 @@ always @ (posedge sclk or negedge spirstb)
 
 assign latdxy_xybuf = latdxy;
 
-reg	latdxy_xybuf_d1;
+reg     latdxy_xybuf_d1;
 always @ (posedge sclk or negedge spirstb) begin
     if (~spirstb)
         latdxy_xybuf_d1 <= 0;
@@ -470,7 +470,7 @@ always @ (posedge sclk or negedge spirstb) begin
         reset_xybuf <= 0;
     else if (latdxy_xybuf_d1)
         reset_xybuf <= 1;
-    else if (count7_flg)		// increase pulse width for xyclk CDCSync
+    else if (count7_flg)                // increase pulse width for xyclk CDCSync
         reset_xybuf <= 0;
 end
 
@@ -507,7 +507,7 @@ always @ (posedge sclk or negedge spirstb)
         write3 <=0;
     else if (spi_Write3_set)
         write3 <= B_w3clr_enh;
-    else if (count7_flg)		// increase pulse width for xyclk CDCSync
+    else if (count7_flg)                // increase pulse width for xyclk CDCSync
         write3 <=0;
 
 //----------------------------------------
@@ -557,14 +557,14 @@ always @ (posedge sclk or negedge spirstb) begin
 end
 
 Sync_Pulse sync_spi_RdPix_Rst (
-        // Outputs
-        .b_pulseout	(spi_RdPix_Rst_pxck),
-        // Inputs
-        .a_pulsein	(spi_RdPix_Rst),
-        .a_clk		(sclk),
-        .a_rstn		(rst_n),
-        .b_clk		(sysclk),
-        .b_rstn		(C_purstb_px));
+    // Outputs
+    .b_pulseout     (spi_RdPix_Rst_pxck),
+    // Inputs
+    .a_pulsein      (spi_RdPix_Rst),
+    .a_clk          (sclk),
+    .a_rstn         (rst_n),
+    .b_clk          (sysclk),
+    .b_rstn         (C_purstb_px));
 
 assign RdPix_Rst = spi_RdPix_Rst;
 assign RdPix_Rst_pxck = spi_RdPix_Rst_pxck;

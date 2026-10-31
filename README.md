@@ -1,0 +1,1 @@
+# Safe_DataLatch_Structure_for_I2CSPI

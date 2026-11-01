@@ -1,0 +1,25 @@
+{ "signal": [
+  { "name": "NCS",          "wave":  "10................1.",                                                                period:1 },
+  { "name": "SCK",          "wave":  "1.n.......Nn.....nh.",                                                                period:1 },
+  { "name": "MOSI",         "wave": "x.0=======x.........", "data": ["A6","A5","A4","A3","A2","A1","A0"] ,                  period:1 },
+  { "name": "MISO",         "wave": "z.........========z.", "data": ["RD7","RD6","RD5","RD4","RD3","RD2","RD1","RD0"] ,     period:1 }, 
+  {},
+
+['flag',
+  { "name": "spi_prelat",   "wave":  "0....1.............0....................",                                            period:0.5},
+  { "name": "spi_latch",    "wave":  "0....................1.0................",                                            period:0.5},
+  { "name": "spi_reset",    "wave":  "0........................1.........0....",                                            period:0.5},
+],
+
+{},
+
+['non_flag',
+  { "name": "spi_prelat",   "wave":  "0....1.............0....................",                                            period:0.5},
+  { "name": "spi_latch",    "wave":  "0.......................................",                                            period:0.5},
+  { "name": "spi_reset",    "wave":  "0.......................................",                                            period:0.5},
+],
+
+],
+ "head": {"text": "SPI Read", tick:0 },
+ "foot": {"text": "data load @ tick10"}
+}

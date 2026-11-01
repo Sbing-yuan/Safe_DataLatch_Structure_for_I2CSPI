@@ -1,0 +1,9 @@
+{ "signal": [
+  { "name": "NCS", "wave": "10................1." },
+  { "name": "SCK", "wave": "1.n..............nh." },
+  { "name": "MOSI", "wave": "x.1===============x.", "data": ["A6","A5","A4","A3","A2","A1","A0","WR7","WR6","WR5","WR4","WR3","WR2","WR1", "WR0"] },
+  { "name": "MISO", "wave": "z...................",  }
+],
+  "head": { "text": "SPI Write" },
+  "config": { "hscale": 1 }
+}

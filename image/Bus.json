@@ -1,0 +1,12 @@
+{ signal: [
+  {name: "Src_Bus_event", wave: "=...=....", data:["00", "11"], phase:1.2 }, 
+  {name: "Des_clk", wave: 'P.......'},
+  {name: "A", wave: '=..8=...', data:["00", "Meta", "11"]},
+  {name: "B", wave: '=...=...', data:["00", "11"] },
+  {name: "C", wave: '=....=..', data:["00", "11"]},
+  {name: "D", wave: '1...01..'},
+  {name: "E", wave: '=.....=.', data:["00", "11"]},
+],
+  foot:{
+   text:'No Skew during Bus Transfer',},
+}
